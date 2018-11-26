@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     status: {
-      type: DataTypes.STRING,
+      type: DataTypes.ENUM("pending", "approve", "reject"),
       allowNull: false
     },
     artistId: {
@@ -28,27 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
-  AppliedGig.associate = function(models) {
-    // associations can be defined here
-    models.Artist.hasmany(models.AppliedGig, {
-      foreignKey: "artistsId",
-      onDelete: "CASCADE",
-      as: "Artists",
-      foreignKey: {
-        allowNull: false
-      }
-    });
-  };
 
-  AppliedGig.associate = function(models) {
-    models.CreateGig.hasMany(models.AppliedGig, {
-      foreignKey: "createGigsId",
-      onDelete: "CASCADE",
-      as: "CreateGigs",
-      foreignKey: {
-        allowNull: false
-      }
-    });
-  };
   return AppliedGig;
 };

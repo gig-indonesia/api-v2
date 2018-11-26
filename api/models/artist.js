@@ -39,14 +39,25 @@ module.exports = (sequelize, DataTypes) => {
         model: "Accounts",
         key: "id"
       }
+    },
+    createGigId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+      references: {
+        model: "CreatedGigs",
+        key: "id"
+      }
     }
   });
   Artist.associate = function(models) {
     // associations can be defined here
-    models.Account.hasOne(models.Artist, {
-      foreignKey: "accountId",
-      targetKey: "id"
+    models.Artist.belongsTo(models.Account);
+    models.Artist.belongsToMany(models.CreateGig, {
+      through: { model: "AppliedGigs" },
+      foreignKey: "artistId"
     });
   };
+
   return Artist;
 };

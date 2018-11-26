@@ -1,9 +1,7 @@
 const models = require("../models");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 exports.getAll = (req, res) => {
-  models.Artist.findAll()
+  models.Artist.findAll({ limit: 10, order: [["createdAt", "DESC"]] })
     .then(accounts => res.send(accounts))
     .catch(err => res.send(err));
 };
@@ -13,6 +11,7 @@ exports.createArtist = (req, res) => {
     .then(Artist => res.send(Artist))
     .catch(err => console.log(err));
 };
+
 // exports.deleteOne = (req, res) => {
 //   models.accounts
 //     .findOne({ where: { id: req.params.id } })

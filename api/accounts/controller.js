@@ -2,20 +2,19 @@ const models = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
-module.exports.getAll = (req, res) => {
-  models.Account.findAll()
-    .then(accounts => {
-      console.log(accounts);
-      res.send(accounts);
-    })
-    .catch(err => console.log(err));
-};
+// module.exports.getAll = (req, res) => {
+//   models.Account.findAll()
+//     .then(accounts => {
+//       console.log(accounts);
+//       res.send(accounts);
+//     })
+//     .catch(err => console.log(err));
+// };
 
 exports.login = (req, res) => {
-  const Op = Sequelize.Op;
-
-  models.Accounts.findOne({
+  models.Account.findOne({
     where: {
       // email: req.body.email
       [Op.or]: [{ email: req.body.login }, { username: req.body.login }]
@@ -70,31 +69,52 @@ exports.register = (req, res) => {
     .catch(err => res.send(err));
 };
 
-exports.deleteOne = (req, res) => {
-  models.Accounts.findOne({ where: { id: req.params.id } })
-    .then(accounts => accounts.destroy())
-    .then(result => res.send(result))
-    .catch(err => res.send(err));
-};
+// exports.deleteOne = (req, res) => {
+//   models.Accounts.findOne({ where: { id: req.params.id } })
+//     .then(accounts => accounts.destroy())
+//     .then(result => res.send(result))
+//     .catch(err => res.send(err));
+// };
 
 // exports.deleteAll = (req, res) => {
 //   models.Accounts
 // }
 
-exports.search = (req, res) => {
-  models.Accounts.findAll({
-    where: req.query
-  })
-    .then(accounts => res.send(accounts))
-    .catch(err => res.send(err));
+// exports.search = (req, res) => {
+//   models.Accounts.findAll({
+//     where: req.query
+//   })
+//     .then(accounts => res.send(accounts))
+//     .catch(err => res.send(err));
+// };
+
+exports.updateEmail = (req, res, next) => {
+  models.Account.update(
+    { email: req.body.email },
+    {
+      where: {
+        id: req.params.id
+      }
+    }
+  )
+    .then(result => res.send(result))
+    .catch(err => console.log(err));
 };
 
-exports.update = (req, res) => {
-  models.Accounts.update(req.body, {
-    where: {
-      id: req.params.id
+exports.updatePassword = (req, res, next) => {
+  const SALT_WORK_FACTOR = 7;
+  const salt = bcrypt.genSaltSync(SALT_WORK_FACTOR);
+
+  req.body.password = bcrypt.hashSync(req.body.password, salt);
+
+  models.Account.update(
+    { password: req.body.password },
+    {
+      where: {
+        id: req.params.id
+      }
     }
-  })
+  )
     .then(result => res.send(result))
     .catch(err => console.log(err));
 };

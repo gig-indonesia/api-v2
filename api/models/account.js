@@ -24,7 +24,15 @@ module.exports = (sequelize, DataTypes) => {
     {}
   );
   Account.associate = function(models) {
-    // associations can be defined here
+    models.Account.hasOne(models.Artist, {
+      foreignKey: "accountId",
+      targetKey: "id"
+    });
+
+    models.Account.hasOne(models.Host, {
+      foreignKey: "accountId",
+      targetKey: "id"
+    });
   };
   return Account;
 };

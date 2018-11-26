@@ -15,7 +15,6 @@ module.exports = {
       artistId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "Artists",
           key: "id"
@@ -24,7 +23,6 @@ module.exports = {
       createGigsId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
         references: {
           model: "CreateGigs",
           key: "id"

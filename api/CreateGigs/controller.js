@@ -1,19 +1,20 @@
 const models = require("../models");
 
 exports.getAll = (req, res) => {
-  models.CreateGig.findAll()
+  models.CreateGig.findAll({ limit: 10, order: [["updatedAt", "DESC"]] })
     .then(creategig => res.send(creategig))
     .catch(err => console.log(err));
 };
 
 exports.getCreated = (req, res) => {
-  models.CreateGig.findAll({
-    where: {
-      id: req.params.id
-    },
-    order: ["updatedAt", "DESC"],
-    limit: 10
-  })
+  models.Host.getCreateGig({ order: [["createdAt", "DESC"]] })
+    // models.CreateGig.findAll({
+    //   where: {
+    //     id: req.params.id
+    //   },
+    //   order: ["updatedAt", "DESC"],
+    //   limit: 10
+    // })
     .then(creategig => res.send(creategig))
     .catch(err => console.log(err));
 };

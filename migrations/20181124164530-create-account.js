@@ -24,6 +24,9 @@ module.exports = {
           isEmail: true
         }
       },
+      type: {
+        type: Sequelize.ENUM("artist", "host")
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

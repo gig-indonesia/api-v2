@@ -45,9 +45,10 @@ module.exports = (sequelize, DataTypes) => {
   );
   CreateGig.associate = function(models) {
     // associations can be defined here
-    models.Host.hasMany(models.CreateGig, {
-      foreignKey: "hostId",
-      targetKey: "id"
+    models.CreateGig.belongsTo(models.Host);
+    models.CreateGig.belongsToMany(models.Artist, {
+      through: { model: "AppliedGigs" },
+      foreignKey: "createGigsId"
     });
   };
   return CreateGig;

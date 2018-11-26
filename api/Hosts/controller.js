@@ -1,6 +1,4 @@
 const models = require("../models");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 exports.showHost = (req, res) => {
   models.Hosts.findOne({
